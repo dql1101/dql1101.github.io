@@ -95,18 +95,18 @@
 
 
 
-<meta name="description" content="Hibernate的缓存机制一、为什么要使用Hibernate的缓存？Hibernate是一个持久层的框架，经常访问物理层的数据库，所以为了降低程序对物理数据源访问的次数，提高程序的运行性能，程序有时会直接从缓存读写数据。 二、Hibernate的缓存原理？Hibernate缓存包括两大类：Hibernate一级缓存和Hibernate二级缓存。 1.Hibernate一级缓存又称为“Sessio">
+<meta name="description" content="对Hibernate框架缓存的简单介绍">
 <meta name="keywords" content="Hibernate">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HibernateCache">
 <meta property="og:url" content="http://yoursite.com/2017/08/26/HibernateCache/index.html">
 <meta property="og:site_name" content="香蕉还是那个皮">
-<meta property="og:description" content="Hibernate的缓存机制一、为什么要使用Hibernate的缓存？Hibernate是一个持久层的框架，经常访问物理层的数据库，所以为了降低程序对物理数据源访问的次数，提高程序的运行性能，程序有时会直接从缓存读写数据。 二、Hibernate的缓存原理？Hibernate缓存包括两大类：Hibernate一级缓存和Hibernate二级缓存。 1.Hibernate一级缓存又称为“Sessio">
+<meta property="og:description" content="对Hibernate框架缓存的简单介绍">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-26T12:38:04.379Z">
+<meta property="og:updated_time" content="2017-08-26T13:04:10.674Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HibernateCache">
-<meta name="twitter:description" content="Hibernate的缓存机制一、为什么要使用Hibernate的缓存？Hibernate是一个持久层的框架，经常访问物理层的数据库，所以为了降低程序对物理数据源访问的次数，提高程序的运行性能，程序有时会直接从缓存读写数据。 二、Hibernate的缓存原理？Hibernate缓存包括两大类：Hibernate一级缓存和Hibernate二级缓存。 1.Hibernate一级缓存又称为“Sessio">
+<meta name="twitter:description" content="对Hibernate框架缓存的简单介绍">
 
 
 
@@ -344,6 +344,10 @@
           
 
           
+              <div class="post-description">
+                  对Hibernate框架缓存的简单介绍
+              </div>
+          
 
         </div>
       </header>
@@ -358,7 +362,8 @@
       
 
       
-        <h1 id="Hibernate的缓存机制"><a href="#Hibernate的缓存机制" class="headerlink" title="Hibernate的缓存机制"></a>Hibernate的缓存机制</h1><h2 id="一、为什么要使用Hibernate的缓存？"><a href="#一、为什么要使用Hibernate的缓存？" class="headerlink" title="一、为什么要使用Hibernate的缓存？"></a>一、为什么要使用Hibernate的缓存？</h2><p>Hibernate是一个持久层的框架，经常访问物理层的数据库，所以为了降低程序对物理数据源访问的次数，提高程序的运行性能，程序有时会直接从缓存读写数据。</p>
+        <a id="more"></a>
+<h1 id="Hibernate的缓存机制"><a href="#Hibernate的缓存机制" class="headerlink" title="Hibernate的缓存机制"></a>Hibernate的缓存机制</h1><h2 id="一、为什么要使用Hibernate的缓存？"><a href="#一、为什么要使用Hibernate的缓存？" class="headerlink" title="一、为什么要使用Hibernate的缓存？"></a>一、为什么要使用Hibernate的缓存？</h2><p>Hibernate是一个持久层的框架，经常访问物理层的数据库，所以为了降低程序对物理数据源访问的次数，提高程序的运行性能，程序有时会直接从缓存读写数据。</p>
 <h2 id="二、Hibernate的缓存原理？"><a href="#二、Hibernate的缓存原理？" class="headerlink" title="二、Hibernate的缓存原理？"></a>二、Hibernate的缓存原理？</h2><p>Hibernate缓存包括两大类：Hibernate一级缓存和Hibernate二级缓存。</p>
 <h3 id="1-Hibernate一级缓存又称为“Session的缓存”。"><a href="#1-Hibernate一级缓存又称为“Session的缓存”。" class="headerlink" title="1.Hibernate一级缓存又称为“Session的缓存”。"></a>1.Hibernate一级缓存又称为“Session的缓存”。</h3><p>Session内置不能被卸载，Session的缓存是事务范围的缓存（Session对象的生命周期通常对应一个数据库事务或者一个应用事务）。一级缓存中，持久化类的每个实例都具有唯一的OID。</p>
 <h3 id="2-Hibernate二级缓存又称为“SessionFactory的缓存”。"><a href="#2-Hibernate二级缓存又称为“SessionFactory的缓存”。" class="headerlink" title="2.Hibernate二级缓存又称为“SessionFactory的缓存”。"></a>2.Hibernate二级缓存又称为“SessionFactory的缓存”。</h3><p>由于SessionFactory对象的生命周期和应用程序的整个过程对应，因此Hibernate二级缓存是进程范围或者集群范围的缓存，有可能出现并发问题，因此需要采用适当的并发访问策略，该策略为被缓存的数据提供了事务隔离级别。第二级缓存是可选的，是一个可配置的插件，默认下SessionFactory不会启用这个插件。</p>
