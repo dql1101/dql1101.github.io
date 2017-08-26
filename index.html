@@ -268,170 +268,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/26/HibernateCache/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="我叫香蕉皮">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="香蕉还是那个皮">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/26/HibernateCache/" itemprop="url">HibernateCache</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-26T20:13:55+08:00">
-                2017-08-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术文章收藏/" itemprop="url" rel="index">
-                    <span itemprop="name">技术文章收藏</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Hibernate的缓存机制"><a href="#Hibernate的缓存机制" class="headerlink" title="Hibernate的缓存机制"></a>Hibernate的缓存机制</h1><h2 id="一、为什么要使用Hibernate的缓存？"><a href="#一、为什么要使用Hibernate的缓存？" class="headerlink" title="一、为什么要使用Hibernate的缓存？"></a>一、为什么要使用Hibernate的缓存？</h2><p>Hibernate是一个持久层的框架，经常访问物理层的数据库，所以为了降低程序对物理数据源访问的次数，提高程序的运行性能，程序有时会直接从缓存读写数据。</p>
-<h2 id="二、Hibernate的缓存原理？"><a href="#二、Hibernate的缓存原理？" class="headerlink" title="二、Hibernate的缓存原理？"></a>二、Hibernate的缓存原理？</h2><p>Hibernate缓存包括两大类：Hibernate一级缓存和Hibernate二级缓存。</p>
-<h3 id="1-Hibernate一级缓存又称为“Session的缓存”。"><a href="#1-Hibernate一级缓存又称为“Session的缓存”。" class="headerlink" title="1.Hibernate一级缓存又称为“Session的缓存”。"></a>1.Hibernate一级缓存又称为“Session的缓存”。</h3><p>Session内置不能被卸载，Session的缓存是事务范围的缓存（Session对象的生命周期通常对应一个数据库事务或者一个应用事务）。一级缓存中，持久化类的每个实例都具有唯一的OID。</p>
-<h3 id="2-Hibernate二级缓存又称为“SessionFactory的缓存”。"><a href="#2-Hibernate二级缓存又称为“SessionFactory的缓存”。" class="headerlink" title="2.Hibernate二级缓存又称为“SessionFactory的缓存”。"></a>2.Hibernate二级缓存又称为“SessionFactory的缓存”。</h3><p>由于SessionFactory对象的生命周期和应用程序的整个过程对应，因此Hibernate二级缓存是进程范围或者集群范围的缓存，有可能出现并发问题，因此需要采用适当的并发访问策略，该策略为被缓存的数据提供了事务隔离级别。第二级缓存是可选的，是一个可配置的插件，默认下SessionFactory不会启用这个插件。</p>
-<p>Hibernate提供了org.hibernate.cache.CacheProvider接口,它充当缓存插件与Hibernate之间的适配器。</p>
-<h3 id="什么样的数据适合存放到第二级缓存中？"><a href="#什么样的数据适合存放到第二级缓存中？" class="headerlink" title="什么样的数据适合存放到第二级缓存中？ 　　"></a>什么样的数据适合存放到第二级缓存中？ 　　</h3><ol>
-<li>很少被修改的数据 　　</li>
-<li>不是很重要的数据，允许出现偶尔并发的数据 　　</li>
-<li>不会被并发访问的数据 　　</li>
-<li>常量数据 　　<h3 id="不适合存放到第二级缓存的数据？"><a href="#不适合存放到第二级缓存的数据？" class="headerlink" title="不适合存放到第二级缓存的数据？ 　　"></a>不适合存放到第二级缓存的数据？ 　　</h3></li>
-<li>经常被修改的数据 　　</li>
-<li>绝对不允许出现并发访问的数据，如财务数据，绝对不允许出现并发 　　</li>
-<li>与其他应用共享的数据。</li>
-</ol>
-<h2 id="三、Hibernate如何将缓存应用到实际中？"><a href="#三、Hibernate如何将缓存应用到实际中？" class="headerlink" title="三、Hibernate如何将缓存应用到实际中？"></a>三、Hibernate如何将缓存应用到实际中？</h2><h3 id="查询方式"><a href="#查询方式" class="headerlink" title="查询方式"></a>查询方式</h3><p>当Hibernate根据ID访问数据对象的时候，首先从Session一级缓存中查；查不到，如果配置了二级缓存，那么从二级缓存中查；如果都查不到，再查询数据库，把结果按照ID放入到缓存删除、更新、增加数据的时候，同时更新缓存。</p>
-<h3 id="二级缓存的配置-一级缓存较为简单，这里不再赘述"><a href="#二级缓存的配置-一级缓存较为简单，这里不再赘述" class="headerlink" title="二级缓存的配置(一级缓存较为简单，这里不再赘述)"></a>二级缓存的配置(一级缓存较为简单，这里不再赘述)</h3><p>常用的二级缓存插件：</p>
-<p>EHCache  org.hibernate.cache.EhCacheProvider<br>OSCache  org.hibernate.cache.OSCacheProvider<br>SwarmCahe  org.hibernate.cache.SwarmCacheProvider<br>JBossCache  org.hibernate.cache.TreeCacheProvider</p>
-<p>Hibernate中的配置</p>
-<figure class="highlight plain"><figcaption><span>EHCache的配置,hibernate.cfg.xml --> </span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&lt;hibernate-configuration&gt;</div><div class="line">    &lt;session-factory&gt;</div><div class="line">       &lt;!-- 设置二级缓存插件EHCache的Provider类--&gt;</div><div class="line">       &lt;property name=&quot;hibernate.cache.provider_class&quot;&gt;</div><div class="line">          org.hibernate.cache.EhCacheProvider</div><div class="line">       &lt;/property&gt;</div><div class="line">       &lt;!-- 启动&quot;查询缓存&quot; --&gt;</div><div class="line">       &lt;property name=&quot;hibernate.cache.use_query_cache&quot;&gt;</div><div class="line">          true</div><div class="line">       &lt;/property&gt;</div><div class="line">    &lt;/session-factory&gt;</div><div class="line">  &lt;/hibernate-configuration&gt;</div></pre></td></tr></table></figure>
-<p>ehcache缓存的配置<br><figure class="highlight plain"><figcaption><span>ehcache.xml --></span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;ehcache&gt;</div><div class="line">    &lt;!--</div><div class="line">        缓存到硬盘的路径</div><div class="line">    --&gt;</div><div class="line">    &lt;diskStore path=&quot;d:/ehcache&quot;&gt;&lt;/diskStore&gt;</div><div class="line">    &lt;!--</div><div class="line">        默认设置</div><div class="line">        maxElementsInMemory : 在內存中最大緩存的对象数量。</div><div class="line">        eternal : 缓存的对象是否永远不变。</div><div class="line">        timeToIdleSeconds ：可以操作对象的时间。</div><div class="line">        timeToLiveSeconds ：缓存中对象的生命周期，时间到后查询数据会从数据库中读取。</div><div class="line">        overflowToDisk ：内存满了，是否要缓存到硬盘。</div><div class="line">    --&gt;</div><div class="line">    &lt;defaultCache maxElementsInMemory=&quot;200&quot; eternal=&quot;false&quot; </div><div class="line">        timeToIdleSeconds=&quot;50&quot; timeToLiveSeconds=&quot;60&quot; overflowToDisk=&quot;true&quot;&gt;&lt;/defaultCache&gt;</div><div class="line">    &lt;!--</div><div class="line">        指定缓存的对象。</div><div class="line">        下面出现的的属性覆盖上面出现的，没出现的继承上面的。</div><div class="line">    --&gt;</div><div class="line">    &lt;cache name=&quot;com.suxiaolei.hibernate.pojos.Order&quot; maxElementsInMemory=&quot;200&quot; eternal=&quot;false&quot; </div><div class="line">        timeToIdleSeconds=&quot;50&quot; timeToLiveSeconds=&quot;60&quot; overflowToDisk=&quot;true&quot;&gt;&lt;/cache&gt;</div><div class="line">&lt;/ehcache&gt;</div></pre></td></tr></table></figure></p>
-<p>映射文件配置<br><figure class="highlight plain"><figcaption><span>*.hbm.xml --></span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&apos;UTF-8&apos;?&gt;</div><div class="line">&lt;!DOCTYPE hibernate-mapping PUBLIC</div><div class="line"> &quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</div><div class="line"> &quot;http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd&quot; &gt;</div><div class="line">&lt;hibernate-mapping&gt;</div><div class="line">   &lt;class&gt;</div><div class="line">       &lt;!-- 设置该持久化类的二级缓存并发访问策略 read-only read-write nonstrict-read-write transactional--&gt;</div><div class="line">       &lt;cache usage=&quot;read-write&quot;/&gt;    </div><div class="line">   &lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure></p>
-<p>若存在一对多的关系，想要在在获取一方的时候将关联的多方缓存起来，需要在集合属性下添加<cache>子标签，这里需要将关联的对象的hbm文件中必须在存在<class>标签下也添加<cache>标签，不然Hibernate只会缓存OID。</cache></class></cache></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;hibernate-mapping&gt;</div><div class="line">	&lt;class name=&quot;com.suxiaolei.hibernate.pojos.Customer&quot; table=&quot;customer&quot;&gt;</div><div class="line">	    &lt;!-- 主键设置 --&gt;</div><div class="line">	    &lt;id name=&quot;id&quot; type=&quot;string&quot;&gt;</div><div class="line">	        &lt;column name=&quot;id&quot;&gt;&lt;/column&gt;</div><div class="line">	        &lt;generator class=&quot;uuid&quot;&gt;&lt;/generator&gt;</div><div class="line">	    &lt;/id&gt;</div><div class="line">	    </div><div class="line">	    &lt;!-- 属性设置 --&gt;</div><div class="line">	    &lt;property name=&quot;username&quot; column=&quot;username&quot; type=&quot;string&quot;&gt;&lt;/property&gt;</div><div class="line">	    &lt;property name=&quot;balance&quot; column=&quot;balance&quot; type=&quot;integer&quot;&gt;&lt;/property&gt;</div><div class="line">	    </div><div class="line">	    &lt;set name=&quot;orders&quot; inverse=&quot;true&quot; cascade=&quot;all&quot; lazy=&quot;false&quot; fetch=&quot;join&quot;&gt;</div><div class="line">	        &lt;cache usage=&quot;read-only&quot;/&gt;</div><div class="line">	        &lt;key column=&quot;customer_id&quot; &gt;&lt;/key&gt;</div><div class="line">	        &lt;one-to-many class=&quot;com.suxiaolei.hibernate.pojos.Order&quot;/&gt;</div><div class="line">	    &lt;/set&gt;</div><div class="line">	    </div><div class="line">	&lt;/class&gt;</div><div class="line">&lt;/hibernate-mapping&gt;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/21/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -592,32 +428,14 @@
             
               <a href="/archives">
             
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
           
 
           
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
 
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">1</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
           
 
         </nav>
