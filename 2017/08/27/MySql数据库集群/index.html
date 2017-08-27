@@ -104,7 +104,7 @@
 <meta property="og:description" content="MySql数据库集群搭建的相关知识，包括为何需要搭建集群，如何搭建一个简单的MySql集群，搭建集群后主从数据库如何进行数据的同步。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://i.imgur.com/GdqgUrM.jpg">
-<meta property="og:updated_time" content="2017-08-27T09:18:40.164Z">
+<meta property="og:updated_time" content="2017-08-27T11:07:15.030Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySql数据库集群">
 <meta name="twitter:description" content="MySql数据库集群搭建的相关知识，包括为何需要搭建集群，如何搭建一个简单的MySql集群，搭建集群后主从数据库如何进行数据的同步。">
@@ -354,7 +354,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  732
+                  1,199
                 </span>
               
 
@@ -400,7 +400,45 @@
 <blockquote>
 <p>MySQL Cluster 使用了一个专用的基于内存的存储引擎——NDB引擎，这样做的好处是速度快， 没有磁盘I/O的瓶颈，但是由于是基于内存的，所以数据库的规模受系统总内存的限制</p>
 </blockquote>
-<h2 id="MySql集群搭建方式"><a href="#MySql集群搭建方式" class="headerlink" title="MySql集群搭建方式"></a>MySql集群搭建方式</h2><p>mysql:配置主机和从库，master和slave；mysql主库进行操作后会写一个二进制日志文件，给从库去读取。</p>
+<h2 id="MySql集群搭建方式"><a href="#MySql集群搭建方式" class="headerlink" title="MySql集群搭建方式"></a>MySql集群搭建方式</h2><p>mysql:配置主机(master)和从库(slave)；mysql主库进行操作后会写一个二进制日志文件，给从库去读取，从而完成读写分离。但是从库不是立马去读取这个文件，中间有一个缓冲时间，所以有可能会造成，主库数据已经插入了但是从库还没有完成更新的一个数据丢失。</p>
+<h3 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h3><p>配置master:</p>
+<blockquote>
+<p>[root@localhost mysql]# vi /etc/my.cnf　//编辑配置文件</p>
+<p>server-id=1  //默认是1，不是的话则改为1</p>
+<p>thread_concurrency = 2　　//线程并发数(CPU*2)</p>
+<p>log-bin=mysql-bin　　//打开二进制日志功能</p>
+</blockquote>
+<p>保存退出，重新启动mysql。</p>
+<p>登录mysql，为mysql授权slave</p>
+<blockquote>
+<p>[root@localhost mysql]# mysql -uroot -p　　//默认密码空，直接敲回车进入</p>
+<p>mysql&gt; grant replication slave on <em>.</em> to repl@‘192.168.1.%‘ identified by ‘123456‘;</p>
+<p>mysql&gt;flush privileges;</p>
+<p>mysql&gt;show grants for ‘repl‘@‘192.168.1.%‘;　　//查看授权，有记录说明ok</p>
+<p>mysql&gt;show master status\G;　　//查看master服务器状态，有二进制日志文件名和记录位置（position）</p>
+</blockquote>
+<p>配置slave</p>
+<blockquote>
+<p>[root@localhost mysql]#vi /etc/my.cnf　　//编辑配置文件</p>
+<p>server-id=11  //设置与master不一样就行,</p>
+<p>thread_concurrency = 2　　//线程并发数(CPU*2)</p>
+<p>relay-log=mysql-log　　//打开中继日志</p>
+<p>relay-log-index=mysql-log.index　　//设置relay-log-index文件名</p>
+</blockquote>
+<p>保存退出，重新启动mysql。</p>
+<p>登录mysql，设置master的ip和相关属性</p>
+<blockquote>
+<p>[root@localhost mysql]# mysql -uroot -p　　//默认密码空，直接敲回车进入</p>
+<p>mysql&gt;change master to </p>
+<p>   -&gt;master_host=‘192.168.1.109‘,　　//master服务器ip</p>
+<p>　  -&gt;mastet_user=‘repl‘,　　//用户名</p>
+<p>　  -&gt;mastet_password=‘123456‘,　　//密码</p>
+<p>　  -&gt;master_log_file=‘mysql-bin.000001‘,　　//master服务器二进制日志名</p>
+<p>　  -&gt;master_log_pos=107;</p>
+<p>mysql&gt;slave start;　　//启动slave</p>
+<p>mysql&gt; SHOW SLAVE STATUS\G;　　//查看slave状态</p>
+</blockquote>
+<p>如果<strong>Slave_IO_Running</strong>和<strong>Slave_SQL_Running</strong>显示为yes则配置ok，过程中可能会出现：Slave I/O: error connecting to master ‘repl@192.168.1.109:3306‘ - retry-time: 60  retries: 86400, Error_code: 2003<br>引起问题原因是防火墙拦截了，解决办法就是修改防火墙配置，简单直接的办法就是把master服务器的防火墙关掉，执行<strong>/etc/init.d/iptables stop</strong>命令。</p>
 
       
     </div>
@@ -601,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是集群"><span class="nav-number">2.</span> <span class="nav-text">什么是集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建集群的原因"><span class="nav-number">3.</span> <span class="nav-text">搭建集群的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySql集群搭建方式"><span class="nav-number">4.</span> <span class="nav-text">MySql集群搭建方式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是集群"><span class="nav-number">2.</span> <span class="nav-text">什么是集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建集群的原因"><span class="nav-number">3.</span> <span class="nav-text">搭建集群的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySql集群搭建方式"><span class="nav-number">4.</span> <span class="nav-text">MySql集群搭建方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置方式"><span class="nav-number">4.1.</span> <span class="nav-text">配置方式</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -641,7 +679,7 @@
   <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.2</div>
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">全站共2.8k字</span>
+  <span class="post-count">全站共3.3k字</span>
 </div>
 
 
