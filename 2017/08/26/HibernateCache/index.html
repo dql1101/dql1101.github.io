@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="香蕉还是那个皮">
 <meta property="og:description" content="对Hibernate框架缓存的简单介绍">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-26T13:30:51.604Z">
+<meta property="og:updated_time" content="2017-08-27T03:13:18.355Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HibernateCache">
 <meta name="twitter:description" content="对Hibernate框架缓存的简单介绍">
@@ -352,7 +352,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1,074
+                  1,070
                 </span>
               
 
@@ -387,11 +387,13 @@
 <h3 id="1-Hibernate一级缓存又称为“Session的缓存”。"><a href="#1-Hibernate一级缓存又称为“Session的缓存”。" class="headerlink" title="1.Hibernate一级缓存又称为“Session的缓存”。"></a>1.Hibernate一级缓存又称为“Session的缓存”。</h3><p>Session内置不能被卸载，Session的缓存是事务范围的缓存（Session对象的生命周期通常对应一个数据库事务或者一个应用事务）。一级缓存中，持久化类的每个实例都具有唯一的OID。</p>
 <h3 id="2-Hibernate二级缓存又称为“SessionFactory的缓存”。"><a href="#2-Hibernate二级缓存又称为“SessionFactory的缓存”。" class="headerlink" title="2.Hibernate二级缓存又称为“SessionFactory的缓存”。"></a>2.Hibernate二级缓存又称为“SessionFactory的缓存”。</h3><p>由于SessionFactory对象的生命周期和应用程序的整个过程对应，因此Hibernate二级缓存是进程范围或者集群范围的缓存，有可能出现并发问题，因此需要采用适当的并发访问策略，该策略为被缓存的数据提供了事务隔离级别。第二级缓存是可选的，是一个可配置的插件，默认下SessionFactory不会启用这个插件。</p>
 <p>Hibernate提供了org.hibernate.cache.CacheProvider接口,它充当缓存插件与Hibernate之间的适配器。</p>
-<h3 id="什么样的数据适合存放到第二级缓存中？"><a href="#什么样的数据适合存放到第二级缓存中？" class="headerlink" title="什么样的数据适合存放到第二级缓存中？ 　　"></a>什么样的数据适合存放到第二级缓存中？ 　　</h3><ol>
+<h3 id="适合存放到第二级缓存的数据？"><a href="#适合存放到第二级缓存的数据？" class="headerlink" title="适合存放到第二级缓存的数据？ 　　"></a>适合存放到第二级缓存的数据？ 　　</h3><ol>
 <li>很少被修改的数据 　　</li>
 <li>不是很重要的数据，允许出现偶尔并发的数据 　　</li>
 <li>不会被并发访问的数据 　　</li>
-<li>常量数据 　　<h3 id="不适合存放到第二级缓存的数据？"><a href="#不适合存放到第二级缓存的数据？" class="headerlink" title="不适合存放到第二级缓存的数据？ 　　"></a>不适合存放到第二级缓存的数据？ 　　</h3></li>
+<li>常量数据 　　</li>
+</ol>
+<h3 id="不适合存放到第二级缓存的数据？"><a href="#不适合存放到第二级缓存的数据？" class="headerlink" title="不适合存放到第二级缓存的数据？ 　　"></a>不适合存放到第二级缓存的数据？ 　　</h3><ol>
 <li>经常被修改的数据 　　</li>
 <li>绝对不允许出现并发访问的数据，如财务数据，绝对不允许出现并发 　　</li>
 <li>与其他应用共享的数据。</li>
@@ -528,7 +530,7 @@
             
               <a href="/archives">
             
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -550,7 +552,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -609,7 +611,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hibernate的缓存机制"><span class="nav-number">1.</span> <span class="nav-text">Hibernate的缓存机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、为什么要使用Hibernate的缓存？"><span class="nav-number">1.1.</span> <span class="nav-text">一、为什么要使用Hibernate的缓存？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Hibernate的缓存原理？"><span class="nav-number">1.2.</span> <span class="nav-text">二、Hibernate的缓存原理？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Hibernate一级缓存又称为“Session的缓存”。"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.Hibernate一级缓存又称为“Session的缓存”。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Hibernate二级缓存又称为“SessionFactory的缓存”。"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.Hibernate二级缓存又称为“SessionFactory的缓存”。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么样的数据适合存放到第二级缓存中？"><span class="nav-number">1.2.3.</span> <span class="nav-text">什么样的数据适合存放到第二级缓存中？ 　　</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适合存放到第二级缓存的数据？"><span class="nav-number">1.2.4.</span> <span class="nav-text">不适合存放到第二级缓存的数据？ 　　</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Hibernate如何将缓存应用到实际中？"><span class="nav-number">1.3.</span> <span class="nav-text">三、Hibernate如何将缓存应用到实际中？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询方式"><span class="nav-number">1.3.1.</span> <span class="nav-text">查询方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二级缓存的配置-一级缓存较为简单，这里不再赘述"><span class="nav-number">1.3.2.</span> <span class="nav-text">二级缓存的配置(一级缓存较为简单，这里不再赘述)</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hibernate的缓存机制"><span class="nav-number">1.</span> <span class="nav-text">Hibernate的缓存机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、为什么要使用Hibernate的缓存？"><span class="nav-number">1.1.</span> <span class="nav-text">一、为什么要使用Hibernate的缓存？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Hibernate的缓存原理？"><span class="nav-number">1.2.</span> <span class="nav-text">二、Hibernate的缓存原理？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Hibernate一级缓存又称为“Session的缓存”。"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.Hibernate一级缓存又称为“Session的缓存”。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Hibernate二级缓存又称为“SessionFactory的缓存”。"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.Hibernate二级缓存又称为“SessionFactory的缓存”。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适合存放到第二级缓存的数据？"><span class="nav-number">1.2.3.</span> <span class="nav-text">适合存放到第二级缓存的数据？ 　　</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不适合存放到第二级缓存的数据？"><span class="nav-number">1.2.4.</span> <span class="nav-text">不适合存放到第二级缓存的数据？ 　　</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Hibernate如何将缓存应用到实际中？"><span class="nav-number">1.3.</span> <span class="nav-text">三、Hibernate如何将缓存应用到实际中？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询方式"><span class="nav-number">1.3.1.</span> <span class="nav-text">查询方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二级缓存的配置-一级缓存较为简单，这里不再赘述"><span class="nav-number">1.3.2.</span> <span class="nav-text">二级缓存的配置(一级缓存较为简单，这里不再赘述)</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
